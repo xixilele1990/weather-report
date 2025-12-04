@@ -90,9 +90,12 @@ cityInput.addEventListener("input", () => {
 
 // Wave 4: hook up "Get Realtime Temperature" button
 // LocationIQ
+
+const PROXY_BASE_URL = 'https://ada-weather-report-proxy-server.onrender.com';
+
 async function getCoordinates(cityName) {
     try {
-        const response = await axios.get(`http://localhost:5000/location?q=${cityName}`);
+        const response = await axios.get(`${PROXY_BASE_URL}/location?q=${cityName}`);
         const firstResult = response.data[0];
         return {lat: firstResult.lat, lon: firstResult.lon};
     } catch (error) {
@@ -103,7 +106,6 @@ async function getCoordinates(cityName) {
 // for testing
 // getCoordinates("Seattle").then(coords => console.log(coords));
 
-const PROXY_BASE_URL = 'https://ada-weather-report-proxy-server.onrender.com';
 
 async function getTemperature(lat, lon) {
   try {
