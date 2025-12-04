@@ -1,21 +1,3 @@
-//wave 3
-
-const cityName = document.getElementById("headerCityName")
-const cityInput = document.getElementById("cityNameInput")
-
-cityInput.addEventListener("input", () => {
-    cityName.textContent = cityInput.value;
-});
-
-//wave 6
-const defaultCity = "Seattle";
-const resetButton = document.getElementById("cityNameReset")
-
-resetButton.addEventListener("click", () => {
-    cityInput.value = defaultCity;
-    cityName.textContent = defaultCity;
-});
-
 /* Wave 2: Temperature controls, color ranges, and landscape */
 
 const tempValueEl = document.getElementById('tempValue');
@@ -100,7 +82,6 @@ updateTemperatureUI();
 registerTemperatureControls();
 
 
-
 //wave 3
 
 const cityName = document.getElementById("headerCityName")
@@ -110,14 +91,6 @@ cityInput.addEventListener("input", () => {
     cityName.textContent = cityInput.value;
 });
 
-//wave 6
-const defaultCity = "Seattle";
-const resetButton = document.getElementById("cityNameReset")
-
-resetButton.addEventListener("click", () => {
-    cityInput.value = defaultCity;
-    cityName.textContent = defaultCity;
-});
 
 //wave 4 LocationIQ
 async function getCoordinates(cityName) {
@@ -130,17 +103,19 @@ async function getCoordinates(cityName) {
         return null;
     }
 }
+// for testing
+// getCoordinates("Seattle").then(coords => console.log(coords)); 
 
-getCoordinates("Seattle").then(coords => console.log(coords));
 
-// function getCoordinates(cityName) {
-//     return axios
-//         .get(`http://localhost:5000/location?q=${cityName}`)
-//         .then(response => {
-//             return response.data;
-//         })
-//         .catch(error => {
-//             console.error("Error getting coordinates:", error);
-//             return null;
-//         });
-// }
+//wave 6
+const defaultCity = "Seattle";
+const resetButton = document.getElementById("cityNameReset")
+
+resetButton.addEventListener("click", () => {
+    cityInput.value = defaultCity;
+    cityName.textContent = defaultCity;
+});
+
+
+
+
