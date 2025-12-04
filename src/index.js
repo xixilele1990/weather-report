@@ -50,10 +50,8 @@ const getLandscapeForTemperature = (temp) => {
 const updateTemperatureUI = () => {
   if (!tempValueEl || !landscapeEl) return;
 
-  // Display 
   tempValueEl.textContent = `${temperature}°F`;
 
-  // Update color
   tempValueEl.classList.remove(...temperatureColorClasses);
   tempValueEl.classList.add(getTemperatureColorClass(temperature));
 
@@ -76,8 +74,6 @@ const registerTemperatureControls = () => {
     });
   }
 };
-
-
 updateTemperatureUI();
 registerTemperatureControls();
 
@@ -107,6 +103,28 @@ async function getCoordinates(cityName) {
 // getCoordinates("Seattle").then(coords => console.log(coords)); 
 
 
+// wave 5
+const skySelect = document.getElementById('skySelect');
+const skyElement = document.getElementById('sky');
+
+const skyOptions = {
+  sunny: '☀️☀️☀️☀️☀️☀️☀️☀️☀️☀️☀️',
+  Cloudy: '☁️☁️ ☁️ ☁️☁️ ☁️ 🌤 ☁️ ☁️☁️',
+  Rainy: '🌧🌈⛈🌧🌧💧⛈🌧🌧💧',
+  Snowy: '❄️❄️❄️❄️❄️❄️❄️❄️',
+}
+
+const updateSkyUI = () =>{
+  const currentSky = skySelect.value;
+  skyElement.textContent = skyOptions[currentSky];
+  //console.log('currentSky = ', currentSky);
+  //console.log('skyOptions[currentSky] = ', skyOptions[currentSky]);
+}
+
+skySelect.addEventListener('change',updateSkyUI); 
+updateSkyUI();
+
+
 //wave 6
 const defaultCity = "Seattle";
 const resetButton = document.getElementById("cityNameReset")
@@ -115,6 +133,14 @@ resetButton.addEventListener("click", () => {
     cityInput.value = defaultCity;
     cityName.textContent = defaultCity;
 });
+
+
+
+
+
+
+
+
 
 
 
