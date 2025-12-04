@@ -90,6 +90,7 @@ font-size: 3rem;
 margin-left: 1.5rem;
 /* padding-right: 1rem; */
 /* margin-right: 1.5rem; */
+transition: color 0.2s ease, background-color 0.2s ease;
 }
 
 .temperature__controls {
@@ -146,6 +147,27 @@ color: green;
 }
 
 .teal {
+color: teal;
+}
+
+/* Wave 2: temperature-based color ranges */
+.temp-hot {
+color: red;
+}
+
+.temp-warm {
+color: orange;
+}
+
+.temp-mild {
+color: gold;
+}
+
+.temp-cool {
+color: green;
+}
+
+.temp-cold {
 color: teal;
 }
 

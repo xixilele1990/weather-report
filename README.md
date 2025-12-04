@@ -119,3 +119,10 @@ Wave 6:
 [Wave 6: Resetting the City Name](./ada-project-docs/wave-06.md)
 
 [Optional Enhancements to inspire you](./ada-project-docs/optional-enhancements.md)
+
+
+Slides: https://docs.google.com/presentation/d/1cdlD7SYPYGI7uRNy_LylE5GlSVAQ8fKe2IbU_FiSDrY/edit?usp=sharing
+Weather Report Repo: https://github.com/Ada-c24/weather-report
+Weather Report Live Sample: https://adagold.github.io/weather-report/
+Weather Report Proxy Server Repo: http://github.com/AdaGold/weather-report-proxy-server
+Weather Report Proxy Server Live Server: https://ada-weather-report-proxy-server.onrender.com
