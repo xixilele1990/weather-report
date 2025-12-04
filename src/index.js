@@ -68,10 +68,8 @@ const getLandscapeForTemperature = (temp) => {
 const updateTemperatureUI = () => {
   if (!tempValueEl || !landscapeEl) return;
 
-  // Display 
   tempValueEl.textContent = `${temperature}°F`;
 
-  // Update color
   tempValueEl.classList.remove(...temperatureColorClasses);
   tempValueEl.classList.add(getTemperatureColorClass(temperature));
 
@@ -94,9 +92,34 @@ const registerTemperatureControls = () => {
     });
   }
 };
-
-
 updateTemperatureUI();
 registerTemperatureControls();
+
+
+// wave 5
+const skySelect = document.getElementById('skySelect');
+const skyElement = document.getElementById('sky');
+
+const skyOptions = {
+  sunny: '☀️☀️☀️☀️☀️☀️☀️☀️☀️☀️☀️',
+  Cloudy: '☁️☁️ ☁️ ☁️☁️ ☁️ 🌤 ☁️ ☁️☁️',
+  Rainy: '🌧🌈⛈🌧🌧💧⛈🌧🌧💧',
+  Snowy: '❄️❄️❄️❄️❄️❄️❄️❄️',
+}
+
+const updateSkyUI = () =>{
+  const currentSky = skySelect.value;
+  skyElement.textContent = skyOptions[currentSky];
+  //console.log('currentSky = ', currentSky);
+  //console.log('skyOptions[currentSky] = ', skyOptions[currentSky]);
+}
+
+skySelect.addEventListener('change',updateSkyUI); 
+updateSkyUI();
+
+
+
+
+
 
 
