@@ -88,7 +88,8 @@ cityInput.addEventListener("input", () => {
 });
 
 
-//wave 4 LocationIQ
+// Wave 4: hook up "Get Realtime Temperature" button
+// LocationIQ
 async function getCoordinates(cityName) {
     try {
         const response = await axios.get(`http://localhost:5000/location?q=${cityName}`);
@@ -100,7 +101,55 @@ async function getCoordinates(cityName) {
     }
 }
 // for testing
-// getCoordinates("Seattle").then(coords => console.log(coords)); 
+// getCoordinates("Seattle").then(coords => console.log(coords));
+
+const PROXY_BASE_URL = 'https://ada-weather-report-proxy-server.onrender.com';
+
+async function getTemperature(lat, lon) {
+  try {
+    const response = await axios.get(`${PROXY_BASE_URL}/weather`, {
+      params: { lat, lon },
+    });
+
+    //console.log('weather response.data =', response.data);
+
+    const kelvin = response.data.main.temp;
+
+    if (kelvin === undefined) {
+      console.error('temp not found in response.data');
+      return null;
+    }
+
+    const fahrenheit = (kelvin - 273.15) * (9 / 5) + 32;
+    return fahrenheit;
+  } catch (error) {
+    console.error('Error getting temperature from proxy:', error);
+    throw error;
+  }
+}
+
+
+const currentTempButton = document.getElementById('currentTempButton');
+
+const handleCurrentTempClick = async () => {
+  const currentCity = cityInput.value || 'Seattle';
+
+  try {
+    const coords = await getCoordinates(currentCity);
+    if (!coords) return;
+
+    const tempF = await getTemperature(coords.lat, coords.lon);
+    if (tempF == null) return;
+
+    temperature = Math.round(tempF);
+    updateTemperatureUI();
+  } catch (error) {
+    console.error('Error updating realtime temperature:', error);
+  }
+};
+
+currentTempButton.addEventListener('click', handleCurrentTempClick);
+
 
 
 // wave 5
