@@ -88,8 +88,7 @@ cityInput.addEventListener("input", () => {
 });
 
 
-// Wave 4: hook up "Get Realtime Temperature" button
-// LocationIQ
+// Wave 4a: LocationIQ
 
 const PROXY_BASE_URL = 'https://ada-weather-report-proxy-server.onrender.com';
 
@@ -107,6 +106,7 @@ async function getCoordinates(cityName) {
 // getCoordinates("Seattle").then(coords => console.log(coords));
 
 
+// wave 4b: : hook up "Get Realtime Temperature" button
 async function getTemperature(lat, lon) {
   try {
     const response = await axios.get(`${PROXY_BASE_URL}/weather`, {
@@ -159,7 +159,7 @@ const skySelect = document.getElementById('skySelect');
 const skyElement = document.getElementById('sky');
 
 const skyOptions = {
-  sunny: '☀️☀️☀️☀️☀️☀️☀️☀️☀️☀️☀️',
+  Sunny: '☀️☀️☀️☀️☀️☀️☀️☀️☀️☀️☀️',
   Cloudy: '☁️☁️ ☁️ ☁️☁️ ☁️ 🌤 ☁️ ☁️☁️',
   Rainy: '🌧🌈⛈🌧🌧💧⛈🌧🌧💧',
   Snowy: '❄️❄️❄️❄️❄️❄️❄️❄️',
