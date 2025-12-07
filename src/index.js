@@ -1,11 +1,10 @@
-/* Wave 2: Temperature controls, color ranges, and landscape */
+// Wave 2,Fahrenheit as the base unit
 
 const tempValueEl = document.getElementById('tempValue');
 const increaseTempControl = document.getElementById('increaseTempControl');
 const decreaseTempControl = document.getElementById('decreaseTempControl');
 const landscapeEl = document.getElementById('landscape');
 
-// Use Fahrenheit as the base unit for Wave 2
 let temperature = 70;
 
 const temperatureColorClasses = [
@@ -48,14 +47,9 @@ const getLandscapeForTemperature = (temp) => {
 };
 
 const updateTemperatureUI = () => {
-  if (!tempValueEl || !landscapeEl) return;
-
   tempValueEl.textContent = `${temperature}°F`;
-
   tempValueEl.classList.remove(...temperatureColorClasses);
   tempValueEl.classList.add(getTemperatureColorClass(temperature));
-
-
   landscapeEl.textContent = getLandscapeForTemperature(temperature);
 };
 
@@ -95,18 +89,22 @@ const PROXY_BASE_URL = 'https://ada-weather-report-proxy-server.onrender.com';
 async function getCoordinates(cityName) {
     try {
         const response = await axios.get(`${PROXY_BASE_URL}/location?q=${cityName}`);
-        const firstResult = response.data[0];
+        //console.log('location response.data =', response.data);
+        const results = response.data;
+        //console.log('location results =', results);
+        if (!Array.isArray(results) || results.length === 0) {
+          console.error('No location results for', cityName, results);
+          return null;
+        }
+        const firstResult = results[0];
         return {lat: firstResult.lat, lon: firstResult.lon};
     } catch (error) {
         console.error("Error getting coordinates:", error);
         return null;
     }
 }
-// for testing
-// getCoordinates("Seattle").then(coords => console.log(coords));
 
-
-// wave 4b: : hook up "Get Realtime Temperature" button
+// Wave 4b: : hook up "Get Realtime Temperature" button
 async function getTemperature(lat, lon) {
   try {
     const response = await axios.get(`${PROXY_BASE_URL}/weather`, {
