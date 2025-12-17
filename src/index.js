@@ -1,11 +1,19 @@
-// Wave 2,Fahrenheit as the base unit
+// Wave 2, Fahrenheit as the base unit
 
 const tempValueEl = document.getElementById('tempValue');
 const increaseTempControl = document.getElementById('increaseTempControl');
 const decreaseTempControl = document.getElementById('decreaseTempControl');
 const landscapeEl = document.getElementById('landscape');
 
-let temperature = 70;
+
+const state = {
+  temperature: 70,
+  defaultCity: 'Seattle',
+};
+
+function kelvinToFahrenheit(kelvin) {
+  return (kelvin - 273.15) * (9 / 5) + 32;
+}
 
 const temperatureColorClasses = [
   'temp-hot',
@@ -17,19 +25,19 @@ const temperatureColorClasses = [
 
 const getTemperatureColorClass = (temp) => {
   if (temp >= 80) {
-    return 'temp-hot';
+    return temperatureColorClasses[0];
   }
   if (temp >= 70) {
-    return 'temp-warm';
+    return temperatureColorClasses[1];
   }
   if (temp >= 60) {
-    return 'temp-mild';
+    return temperatureColorClasses[2];
   }
   if (temp >= 50) {
-    return 'temp-cool';
+    return temperatureColorClasses[3];
   }
 
-  return 'temp-cold';
+  return temperatureColorClasses[4];
 };
 
 const getLandscapeForTemperature = (temp) => {
@@ -47,39 +55,37 @@ const getLandscapeForTemperature = (temp) => {
 };
 
 const updateTemperatureUI = () => {
-  tempValueEl.textContent = `${temperature}°F`;
+  tempValueEl.textContent = `${state.temperature}°F`;
   tempValueEl.classList.remove(...temperatureColorClasses);
-  tempValueEl.classList.add(getTemperatureColorClass(temperature));
-  landscapeEl.textContent = getLandscapeForTemperature(temperature);
+  tempValueEl.classList.add(getTemperatureColorClass(state.temperature));
+  landscapeEl.textContent = getLandscapeForTemperature(state.temperature);
 };
 
 const registerTemperatureControls = () => {
   if (increaseTempControl) {
     increaseTempControl.addEventListener('click', () => {
-      temperature += 1;
+      state.temperature += 1;
       updateTemperatureUI();
     });
   }
 
   if (decreaseTempControl) {
     decreaseTempControl.addEventListener('click', () => {
-      temperature -= 1;
+      state.temperature -= 1;
       updateTemperatureUI();
     });
   }
 };
-updateTemperatureUI();
-registerTemperatureControls();
 
 
 //wave 3
 
-const cityName = document.getElementById("headerCityName");
-const cityInput = document.getElementById("cityNameInput");
+const cityName = document.getElementById('headerCityName');
+const cityInput = document.getElementById('cityNameInput');
 
-cityInput.addEventListener("input", () => {
-    cityName.textContent = cityInput.value;
-});
+const handleCityInput = () => {
+  cityName.textContent = cityInput.value;
+};
 
 
 // Wave 4a: LocationIQ
@@ -89,9 +95,7 @@ const PROXY_BASE_URL = 'https://ada-weather-report-proxy-server.onrender.com';
 async function getCoordinates(cityName) {
     try {
         const response = await axios.get(`${PROXY_BASE_URL}/location?q=${cityName}`);
-        //console.log('location response.data =', response.data);
         const results = response.data;
-        //console.log('location results =', results);
         if (!Array.isArray(results) || results.length === 0) {
           console.error('No location results for', cityName, results);
           return null;
@@ -99,7 +103,7 @@ async function getCoordinates(cityName) {
         const firstResult = results[0];
         return {lat: firstResult.lat, lon: firstResult.lon};
     } catch (error) {
-        console.error("Error getting coordinates:", error);
+        console.error('Error getting coordinates:', error);
         return null;
     }
 }
@@ -111,8 +115,6 @@ async function getTemperature(lat, lon) {
       params: { lat, lon },
     });
 
-    //console.log('weather response.data =', response.data);
-
     const kelvin = response.data.main.temp;
 
     if (kelvin === undefined) {
@@ -120,8 +122,7 @@ async function getTemperature(lat, lon) {
       return null;
     }
 
-    const fahrenheit = (kelvin - 273.15) * (9 / 5) + 32;
-    return fahrenheit;
+    return kelvinToFahrenheit(kelvin);
   } catch (error) {
     console.error('Error getting temperature from proxy:', error);
     throw error;
@@ -131,8 +132,8 @@ async function getTemperature(lat, lon) {
 
 const currentTempButton = document.getElementById('currentTempButton');
 
-const handleCurrentTempClick = async () => {
-  const currentCity = cityInput.value || 'Seattle';
+async function handleCurrentTempClick() {
+  const currentCity = cityInput.value || state.defaultCity;
 
   try {
     const coords = await getCoordinates(currentCity);
@@ -141,14 +142,12 @@ const handleCurrentTempClick = async () => {
     const tempF = await getTemperature(coords.lat, coords.lon);
     if (tempF == null) return;
 
-    temperature = Math.round(tempF);
+    state.temperature = Math.round(tempF);
     updateTemperatureUI();
   } catch (error) {
     console.error('Error updating realtime temperature:', error);
   }
-};
-
-currentTempButton.addEventListener('click', handleCurrentTempClick);
+}
 
 
 
@@ -166,22 +165,31 @@ const skyOptions = {
 const updateSkyUI = () =>{
   const currentSky = skySelect.value;
   skyElement.textContent = skyOptions[currentSky];
-  //console.log('currentSky = ', currentSky);
-  //console.log('skyOptions[currentSky] = ', skyOptions[currentSky]);
-}
-
-skySelect.addEventListener('change',updateSkyUI); 
-updateSkyUI();
+};
 
 
 //wave 6
-const defaultCity = "Seattle";
-const resetButton = document.getElementById("cityNameReset");
+const resetButton = document.getElementById('cityNameReset');
 
-resetButton.addEventListener("click", () => {
-    cityInput.value = defaultCity;
-    cityName.textContent = defaultCity;
-});
+const handleResetClick = () => {
+  cityInput.value = state.defaultCity;
+  cityName.textContent = state.defaultCity;
+};
+
+const init = () => {
+  registerTemperatureControls();
+  cityInput.addEventListener('input', handleCityInput);
+  currentTempButton.addEventListener('click', handleCurrentTempClick);
+  skySelect.addEventListener('change', updateSkyUI);
+  resetButton.addEventListener('click', handleResetClick);
+
+  handleCurrentTempClick();
+  handleCityInput();
+  updateTemperatureUI();
+  updateSkyUI();
+};
+
+init();
 
 
 
