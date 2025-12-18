@@ -61,19 +61,15 @@ const registerTemperatureControls = () => {
   const increaseTempControl = document.getElementById('increaseTempControl');
   const decreaseTempControl = document.getElementById('decreaseTempControl');
 
-  if (increaseTempControl) {
-    increaseTempControl.addEventListener('click', () => {
-      state.temperature += 1;
-      updateTemperatureUI();
-    });
-  }
-
-  if (decreaseTempControl) {
-    decreaseTempControl.addEventListener('click', () => {
-      state.temperature -= 1;
-      updateTemperatureUI();
-    });
-  }
+  increaseTempControl.addEventListener('click', () => {
+    state.temperature += 1;
+    updateTemperatureUI();
+  });
+  
+  decreaseTempControl.addEventListener('click', () => {
+    state.temperature -= 1;
+    updateTemperatureUI();
+  });
 };
 
 
