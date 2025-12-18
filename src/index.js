@@ -1,10 +1,6 @@
 // Wave 2, Fahrenheit as the base unit
-
 const tempValueEl = document.getElementById('tempValue');
-const increaseTempControl = document.getElementById('increaseTempControl');
-const decreaseTempControl = document.getElementById('decreaseTempControl');
 const landscapeEl = document.getElementById('landscape');
-
 
 const state = {
   temperature: 70,
@@ -62,6 +58,9 @@ const updateTemperatureUI = () => {
 };
 
 const registerTemperatureControls = () => {
+  const increaseTempControl = document.getElementById('increaseTempControl');
+  const decreaseTempControl = document.getElementById('decreaseTempControl');
+
   if (increaseTempControl) {
     increaseTempControl.addEventListener('click', () => {
       state.temperature += 1;
