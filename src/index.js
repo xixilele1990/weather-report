@@ -1,15 +1,19 @@
-// Wave 2, Fahrenheit as the base unit
-const tempValueEl = document.getElementById('tempValue');
-const landscapeEl = document.getElementById('landscape');
 
 const state = {
   temperature: 70,
   defaultCity: 'Seattle',
 };
 
-function kelvinToFahrenheit(kelvin) {
-  return (kelvin - 273.15) * (9 / 5) + 32;
-}
+const tempValueEl = document.getElementById('tempValue');
+const landscapeEl = document.getElementById('landscape');
+const cityName = document.getElementById('headerCityName');
+const cityInput = document.getElementById('cityNameInput');
+const currentTempButton = document.getElementById('currentTempButton');
+const skySelect = document.getElementById('skySelect');
+const skyElement = document.getElementById('sky');
+const resetButton = document.getElementById('cityNameReset');
+
+const PROXY_BASE_URL = 'https://ada-weather-report-proxy-server.onrender.com';
 
 const temperatureColorClasses = [
   'temp-hot',
@@ -18,6 +22,20 @@ const temperatureColorClasses = [
   'temp-cool',
   'temp-cold',
 ];
+
+const skyOptions = {
+  Sunny: '☀️☀️☀️☀️☀️☀️☀️☀️☀️☀️☀️',
+  Cloudy: '☁️☁️ ☁️ ☁️☁️ ☁️ 🌤 ☁️ ☁️☁️',
+  Rainy: '🌧🌈⛈🌧🌧💧⛈🌧🌧💧',
+  Snowy: '❄️❄️❄️❄️❄️❄️❄️❄️',
+};
+
+
+// Wave 2, Fahrenheit as the base unit
+
+function kelvinToFahrenheit(kelvin) {
+  return (kelvin - 273.15) * (9 / 5) + 32;
+}
 
 const getTemperatureColorClass = (temp) => {
   if (temp >= 80) {
@@ -75,17 +93,12 @@ const registerTemperatureControls = () => {
 
 //wave 3
 
-const cityName = document.getElementById('headerCityName');
-const cityInput = document.getElementById('cityNameInput');
-
 const handleCityInput = () => {
   cityName.textContent = cityInput.value;
 };
 
 
 // Wave 4a: LocationIQ
-
-const PROXY_BASE_URL = 'https://ada-weather-report-proxy-server.onrender.com';
 
 async function getCoordinates(cityName) {
     try {
@@ -104,6 +117,7 @@ async function getCoordinates(cityName) {
 }
 
 // Wave 4b: : hook up "Get Realtime Temperature" button
+
 async function getTemperature(lat, lon) {
   try {
     const response = await axios.get(`${PROXY_BASE_URL}/weather`, {
@@ -123,9 +137,6 @@ async function getTemperature(lat, lon) {
     throw error;
   }
 }
-
-
-const currentTempButton = document.getElementById('currentTempButton');
 
 async function handleCurrentTempClick() {
   const currentCity = cityInput.value || state.defaultCity;
@@ -147,15 +158,6 @@ async function handleCurrentTempClick() {
 
 
 // wave 5
-const skySelect = document.getElementById('skySelect');
-const skyElement = document.getElementById('sky');
-
-const skyOptions = {
-  Sunny: '☀️☀️☀️☀️☀️☀️☀️☀️☀️☀️☀️',
-  Cloudy: '☁️☁️ ☁️ ☁️☁️ ☁️ 🌤 ☁️ ☁️☁️',
-  Rainy: '🌧🌈⛈🌧🌧💧⛈🌧🌧💧',
-  Snowy: '❄️❄️❄️❄️❄️❄️❄️❄️',
-}
 
 const updateSkyUI = () =>{
   const currentSky = skySelect.value;
@@ -164,7 +166,6 @@ const updateSkyUI = () =>{
 
 
 //wave 6
-const resetButton = document.getElementById('cityNameReset');
 
 const handleResetClick = () => {
   cityInput.value = state.defaultCity;
